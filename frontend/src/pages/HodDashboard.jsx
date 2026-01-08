@@ -1,4 +1,5 @@
 import React from 'react';
+import { useToast } from '../context/ToastContext';
 import {
     Building2,
     Users,
@@ -12,6 +13,7 @@ import {
 } from 'lucide-react';
 
 const HodDashboard = () => {
+    const { showToast } = useToast();
     const departmentStats = {
         name: 'Computer Science & Engineering',
         totalStaff: 24,
@@ -26,6 +28,12 @@ const HodDashboard = () => {
         { id: 3, name: 'Dr. Emily Blunt', subject: 'Machine Learning', passRate: '91%', avgInternal: '42/50' },
     ];
 
+    const [facultySearch, setFacultySearch] = React.useState('');
+    const filteredStaff = staffPerformance.filter(s =>
+        s.name.toLowerCase().includes(facultySearch.toLowerCase()) ||
+        s.subject.toLowerCase().includes(facultySearch.toLowerCase())
+    );
+
     return (
         <div className="space-y-8">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
@@ -34,10 +42,16 @@ const HodDashboard = () => {
                     <p className="text-slate-500 text-sm mt-1">{departmentStats.name}</p>
                 </div>
                 <div className="flex items-center gap-3">
-                    <button className="flex items-center gap-2 px-6 py-3 bg-white border border-slate-200 text-slate-700 rounded-xl font-bold text-sm hover:bg-slate-50 transition-all">
+                    <button
+                        onClick={() => showToast('Broadcast feature coming soon: Mass email system.', 'info')}
+                        className="flex items-center gap-2 px-6 py-3 bg-white border border-slate-200 text-slate-700 rounded-xl font-bold text-sm hover:bg-slate-50 transition-all"
+                    >
                         <Mail size={18} /> Broadcast Message
                     </button>
-                    <button className="flex items-center gap-2 px-6 py-3 bg-primary-600 text-white rounded-xl font-bold text-sm hover:bg-primary-700 transition-all shadow-lg shadow-primary-200">
+                    <button
+                        onClick={() => showToast('Generating departmental performance report (PDF)...', 'success')}
+                        className="flex items-center gap-2 px-6 py-3 bg-primary-600 text-white rounded-xl font-bold text-sm hover:bg-primary-700 transition-all shadow-lg shadow-primary-200"
+                    >
                         <BarChart3 size={18} /> Generate Dept. Report
                     </button>
                 </div>
@@ -51,7 +65,11 @@ const HodDashboard = () => {
                     { label: 'Failing Students', value: '18', icon: AlertCircle, color: 'text-red-600 bg-red-50' },
                     { label: 'Active Faculty', value: '24', icon: UserPlus, color: 'text-purple-600 bg-purple-50' },
                 ].map((stat, idx) => (
-                    <div key={idx} className="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm flex flex-col items-center text-center">
+                    <div
+                        key={idx}
+                        onClick={() => showToast(`Accessing ${stat.label} analytics...`, 'info')}
+                        className="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm flex flex-col items-center text-center cursor-pointer hover:shadow-md transition-all active:scale-95"
+                    >
                         <div className={`p-3 rounded-2xl ${stat.color} mb-3`}>
                             <stat.icon size={24} />
                         </div>
@@ -71,7 +89,13 @@ const HodDashboard = () => {
                         </h2>
                         <div className="relative">
                             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={14} />
-                            <input type="text" placeholder="Search faculty..." className="pl-8 pr-4 py-1.5 bg-slate-100 border-none rounded-lg text-xs outline-none" />
+                            <input
+                                type="text"
+                                placeholder="Search faculty..."
+                                value={facultySearch}
+                                onChange={(e) => setFacultySearch(e.target.value)}
+                                className="pl-8 pr-4 py-1.5 bg-slate-100 border-none rounded-lg text-xs outline-none"
+                            />
                         </div>
                     </div>
                     <div className="overflow-x-auto">
@@ -85,7 +109,7 @@ const HodDashboard = () => {
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-slate-50">
-                                {staffPerformance.map((staff) => (
+                                {filteredStaff.map((staff) => (
                                     <tr key={staff.id} className="hover:bg-slate-50/50 transition-colors">
                                         <td className="px-6 py-4">
                                             <p className="text-sm font-bold text-slate-800">{staff.name}</p>
@@ -102,7 +126,10 @@ const HodDashboard = () => {
                                             </div>
                                         </td>
                                         <td className="px-6 py-4 text-right">
-                                            <button className="p-2 text-slate-400 hover:text-primary-600">
+                                            <button
+                                                onClick={() => showToast(`Viewing profile of ${staff.name}...`, 'info')}
+                                                className="p-2 text-slate-400 hover:text-primary-600"
+                                            >
                                                 <ChevronRight size={18} />
                                             </button>
                                         </td>
@@ -149,7 +176,10 @@ const HodDashboard = () => {
                                 </div>
                             </div>
                         </div>
-                        <div className="mt-12 p-4 bg-white/5 border border-white/10 rounded-2xl flex items-center gap-3">
+                        <div
+                            onClick={() => showToast('Opening Grievance Resolution portal...', 'info')}
+                            className="mt-12 p-4 bg-white/5 border border-white/10 rounded-2xl flex items-center gap-3 cursor-pointer hover:bg-white/10 transition-colors"
+                        >
                             <div className="w-10 h-10 bg-red-500/20 text-red-400 rounded-xl flex items-center justify-center">
                                 <AlertCircle size={20} />
                             </div>

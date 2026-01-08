@@ -13,13 +13,16 @@ import StaffDashboard from './pages/StaffDashboard';
 import StaffAttendance from './pages/StaffAttendance';
 import StaffODRequests from './pages/StaffODRequests';
 import StaffComplaints from './pages/StaffComplaints';
+import StaffProfile from './pages/StaffProfile';
 import AdvisorDashboard from './pages/AdvisorDashboard';
 import AdvisorStudents from './pages/AdvisorStudents';
+import AdvisorAnalytics from './pages/AdvisorAnalytics';
 import HodDashboard from './pages/HodDashboard';
+import HodDepartmentData from './pages/HodDepartmentData';
+import ComingSoon from './components/ComingSoon';
 
-// Staff / HOD Placeholders
-const AdvisorAllocation = () => <DashboardLayout><h1>Subject Allocation</h1><p>Advisor View</p></DashboardLayout>;
-const AdvisorPerformance = () => <DashboardLayout><h1>Class Performance</h1><p>Advisor View</p></DashboardLayout>;
+// Administrative Placeholders
+const AdvisorAllocation = () => <ComingSoon title="Subject Allocation" feature="the internal faculty assignment system" />;
 
 function App() {
   return (
@@ -38,28 +41,28 @@ function App() {
               </ProtectedRoute>
             } />
             <Route path="/student/attendance" element={
-              <ProtectedRoute allowedRoles={['STUDENT']}>
+              <ProtectedRoute allowedRoles={['STUDENT', 'STAFF', 'ADVISOR', 'HOD']}>
                 <DashboardLayout>
                   <StudentAttendance />
                 </DashboardLayout>
               </ProtectedRoute>
             } />
             <Route path="/student/marks" element={
-              <ProtectedRoute allowedRoles={['STUDENT']}>
+              <ProtectedRoute allowedRoles={['STUDENT', 'STAFF', 'ADVISOR', 'HOD']}>
                 <DashboardLayout>
                   <StudentMarks />
                 </DashboardLayout>
               </ProtectedRoute>
             } />
             <Route path="/student/complaints" element={
-              <ProtectedRoute allowedRoles={['STUDENT']}>
+              <ProtectedRoute allowedRoles={['STUDENT', 'STAFF', 'ADVISOR', 'HOD']}>
                 <DashboardLayout>
                   <StudentComplaints />
                 </DashboardLayout>
               </ProtectedRoute>
             } />
             <Route path="/student/profile" element={
-              <ProtectedRoute allowedRoles={['STUDENT']}>
+              <ProtectedRoute allowedRoles={['STUDENT', 'STAFF', 'ADVISOR', 'HOD']}>
                 <DashboardLayout>
                   <StudentProfile />
                 </DashboardLayout>
@@ -95,6 +98,13 @@ function App() {
                 </DashboardLayout>
               </ProtectedRoute>
             } />
+            <Route path="/staff/profile" element={
+              <ProtectedRoute allowedRoles={['STAFF']}>
+                <DashboardLayout>
+                  <StaffProfile />
+                </DashboardLayout>
+              </ProtectedRoute>
+            } />
             <Route path="/advisor/dashboard" element={
               <ProtectedRoute allowedRoles={['ADVISOR']}>
                 <DashboardLayout>
@@ -112,7 +122,21 @@ function App() {
             <Route path="/advisor/analytics" element={
               <ProtectedRoute allowedRoles={['ADVISOR']}>
                 <DashboardLayout>
-                  <AdvisorPerformance />
+                  <AdvisorAnalytics />
+                </DashboardLayout>
+              </ProtectedRoute>
+            } />
+            <Route path="/advisor/allocation" element={
+              <ProtectedRoute allowedRoles={['ADVISOR']}>
+                <DashboardLayout>
+                  <AdvisorAllocation />
+                </DashboardLayout>
+              </ProtectedRoute>
+            } />
+            <Route path="/advisor/profile" element={
+              <ProtectedRoute allowedRoles={['ADVISOR']}>
+                <DashboardLayout>
+                  <StaffProfile />
                 </DashboardLayout>
               </ProtectedRoute>
             } />
@@ -120,6 +144,20 @@ function App() {
               <ProtectedRoute allowedRoles={['HOD']}>
                 <DashboardLayout>
                   <HodDashboard />
+                </DashboardLayout>
+              </ProtectedRoute>
+            } />
+            <Route path="/hod/data" element={
+              <ProtectedRoute allowedRoles={['HOD']}>
+                <DashboardLayout>
+                  <HodDepartmentData />
+                </DashboardLayout>
+              </ProtectedRoute>
+            } />
+            <Route path="/hod/profile" element={
+              <ProtectedRoute allowedRoles={['HOD']}>
+                <DashboardLayout>
+                  <StaffProfile />
                 </DashboardLayout>
               </ProtectedRoute>
             } />

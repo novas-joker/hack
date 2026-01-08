@@ -32,7 +32,7 @@ This document is the official QA protocol for the AMS platform. It covers everyt
 
 ### **2.1 Profile & Identity Management (New)**
 - **Test Case: Photo Upload.**
-  *   *Step:* Go to **My Profile** -> Click **Camera Icon**. Select an image.
+  *   *Step:* Click the **User Info Card** (above Logout) in the sidebar -> Click **Camera Icon**. Select an image.
   *   *Expected:* Image instantly replaces the initial avatar. Success Toast appears.
 - **Test Case: Detail Editing.**
   *   *Step:* Click **"Edit Details"** on Personal Info card.
@@ -62,38 +62,43 @@ This document is the official QA protocol for the AMS platform. It covers everyt
 
 ## 👨‍🏫 3. Staff & Advisor Governance
 
-### **3.1 Attendance Marking (Staff)**
-- **Test Case: Real-time Counters.**
-  *   *Step:* Toggle several students to "Absent".
-  *   *Expected:* "Total Absent" counter in the top bar increments instantly.
-- **Test Case: Cloud Sync Failure.**
-  *   *Step:* Go Offline. Click **"Save Attendance"**.
-  *   *Expected:* Red Toast: "Cloud sync failed. Check your internet connection."
+### **3.1 Staff Efficiency**
+- **Test Case: Quick Dashboard Navigation.**
+  *   *Step:* On Staff Dashboard, click the "Pending OD Requests" stat card.
+  *   *Expected:* Navigates instantly to `/staff/od-requests`.
+- **Test Case: Table Row Interaction.**
+  *   *Step:* In "At-Risk Students" table, click the `ChevronRight` icon on a student row.
+  *   *Expected:* Blue Toast: "Opening performance record for [Name]...".
+- **Test Case: Quick OD Approval.**
+  *   *Step:* In "Pending ODs" sidebar, click "Approve" on a request.
+  *   *Expected:* Navigates to the full OD Requests portal for final processing.
 
-### **3.2 Student Directory (Advisor - New)**
-- **Test Case: Directory Search.**
-  *   *Step:* Login as Advisor -> Go to **Student Profiles**.
-  *   *Step:* Type "Priya" in search.
-  *   *Expected:* Only Priya Iyer's card remains.
-- **Test Case: Profile Drill-down.**
-  *   *Step:* Click **"View Full Profile"** on a student card.
-  *   *Expected:* Navigates to a detailed profile view for that specific student.
+### **3.2 Advisor Hub (New)**
+- **Test Case: Student Lookup.**
+  *   *Step:* On Advisor Dashboard, type a name in the "Student Lookup" search box and hit **Enter**.
+  *   *Expected:* Navigates to the full Student Directory page.
+- **Test Case: Class Performance Log.**
+  *   *Step:* Go to **Class Analytics** in FA sidebar.
+  *   *Expected:* High-level charts (Pass rates, GPA distribution) render with progress bars.
 
 ---
 
 ## 🏢 4. HOD Departmental Oversight
 
-### **4.1 Department Dashboard.**
-- **Test Case: Quick Access.**
-  *   *Step:* Click "Faculty Analytics" card.
-  *   *Expected:* Simulated navigation to departmental reports (HOD functionality verification).
+### **4.1 Department Intelligence**
+- **Test Case: Section Overview.**
+  *   *Step:* Go to **Departmental Data** -> Search for "2-B".
+  *   *Expected:* Shows Class 2-B with Advisor Dr. John Doe.
+- **Test Case: Faculty Rank.**
+  *   *Step:* On HOD Dashboard, check **Faculty Academic Performance**.
+  *   *Expected:* High performers (e.g., Dr. Sarah Wilson) show 96% pass rate with emerald progress bars.
 
 ---
 
-## � 5. Final UX Checklist
-- [ ] **Mobile Sidebar:** On small screens, does the Hamburger menu open/close correctly?
-- [ ] **Breadcrumbs:** Navigating from Marks back to "Portal" (Home) works without refreshing.
-- [ ] **Persistence:** Does the profile photo remain in state while navigating between student pages? (Frontend state check).
+## 🛠️ 5. Final UX Checklist
+- [x] **Sidebar User Card:** Does clicking the user name/avatar above Logout navigate to the correct role-based profile?
+- [x] **Breadcrumbs:** Navigating from Analytics back to Dashboard works smooth.
+- [x] **Coming Soon:** Check "Subject Allocation" route -> Does it show the Construction icon and "feature coming soon" message?
 
 ---
 *Last Verified: January 08, 2026*

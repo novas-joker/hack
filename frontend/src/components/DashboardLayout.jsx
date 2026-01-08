@@ -24,11 +24,23 @@ const DashboardLayout = ({ children }) => {
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
     }, []);
-    const [notifications, setNotifications] = useState([
-        { id: 1, title: 'Attendance Warning', message: 'Your attendance in Machine Learning is 74%', type: 'warning', time: '2h ago', path: '/student/attendance', read: false },
-        { id: 2, title: 'OD Approved', message: 'Your OD application for Smart India Hackathon has been approved.', type: 'success', time: '5h ago', path: '/student/attendance', read: false },
-        { id: 3, title: 'New Mark Released', message: 'CAT 1 Marks for Cyber Security are now available.', type: 'info', time: '1d ago', path: '/student/marks', read: false },
-    ]);
+    const [notifications, setNotifications] = useState([]);
+
+    useEffect(() => {
+        if (!user) return;
+        const initialNotes = user.role === 'STUDENT' ? [
+            { id: 1, title: 'Attendance Warning', message: 'Your attendance in Machine Learning is 74%', type: 'warning', time: '2h ago', path: '/student/attendance', read: false },
+            { id: 2, title: 'OD Approved', message: 'Your OD application is approved.', type: 'success', time: '5h ago', path: '/student/attendance', read: false },
+            { id: 3, title: 'New Mark Released', message: 'CAT 1 Marks are now available.', type: 'info', time: '1d ago', path: '/student/marks', read: false },
+        ] : [
+            { id: 1, title: 'New OD Request', message: 'Rahul Sharma (22CS104) applied for OD.', type: 'info', time: '15m ago', path: `/${user.role.toLowerCase()}/od-requests`, read: false },
+            { id: 2, title: 'Grievance Alert', message: 'Pending student complaint needs review.', type: 'warning', time: '2h ago', path: `/${user.role.toLowerCase()}/complaints`, read: false },
+            { id: 3, title: 'System Message', message: 'Monthly attendance reports are ready.', type: 'success', time: '1d ago', path: '#', read: false },
+        ];
+        // Fix for specific HOD path
+        const safeNotes = initialNotes.map(n => (user.role === 'HOD' && n.path.includes('od-requests')) ? { ...n, path: '/hod/dashboard' } : n);
+        setNotifications(safeNotes);
+    }, [user]);
 
     const unreadCount = notifications.filter(n => !n.read).length;
 
@@ -39,22 +51,34 @@ const DashboardLayout = ({ children }) => {
     const handleNotificationClick = (id, path) => {
         setNotifications(notifications.map(n => n.id === id ? { ...n, read: true } : n));
         setShowNotifications(false);
-        if (path) navigate(path);
+        if (path && path !== '#') navigate(path);
     };
 
     const handleClearActivity = () => {
         setNotifications([]);
     };
 
-    const mockSearchResults = [
-        { id: 1, title: 'Attendance & OD', path: '/student/attendance', category: 'Page' },
-        { id: 2, title: 'Internal Marks', path: '/student/marks', category: 'Page' },
-        { id: 3, title: 'Grievance Portal', path: '/student/complaints', category: 'Page' },
-        { id: 4, title: 'Personal Profile', path: '/student/profile', category: 'Account' },
-    ];
+    const getSearchData = () => {
+        const role = user?.role?.toLowerCase();
+        if (role === 'student') {
+            return [
+                { id: 1, title: 'Attendance & OD', path: '/student/attendance', category: 'Page' },
+                { id: 2, title: 'Internal Marks', path: '/student/marks', category: 'Page' },
+                { id: 3, title: 'Grievance Portal', path: '/student/complaints', category: 'Page' },
+                { id: 4, title: 'Personal Profile', path: '/student/profile', category: 'Account' },
+            ];
+        }
+        return [
+            { id: 1, title: 'Student: Rahul Sharma', path: `/${role}/students`, category: 'Records' },
+            { id: 2, title: 'Student: Priya Patel', path: `/${role}/students`, category: 'Records' },
+            { id: 3, title: 'Mark Attendance', path: '/staff/attendance', category: 'Action' },
+            { id: 4, title: 'Grievance Resolution', path: `/${role}/complaints`, category: 'Portal' },
+            { id: 5, title: 'Analytics', path: role === 'hod' ? '/hod/data' : '/advisor/analytics', category: 'Data' },
+        ];
+    };
 
     const filteredSearch = searchQuery
-        ? mockSearchResults.filter(item => item.title.toLowerCase().includes(searchQuery.toLowerCase()))
+        ? getSearchData().filter(item => item.title.toLowerCase().includes(searchQuery.toLowerCase()))
         : [];
 
     // Breadcrumb Logic
@@ -228,7 +252,7 @@ const DashboardLayout = ({ children }) => {
                         <div className="h-8 w-[1px] bg-slate-200"></div>
 
                         <div
-                            onClick={() => navigate(user?.role === 'STUDENT' ? '/student/profile' : '#')}
+                            onClick={() => navigate(`/${user?.role?.toLowerCase()}/profile`)}
                             className="flex items-center gap-3 cursor-pointer group"
                         >
                             <div className="text-right hidden lg:block">

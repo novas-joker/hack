@@ -36,6 +36,9 @@ const StudentProfile = () => {
     const [isEditing, setIsEditing] = useState(false);
     const [profileImg, setProfileImg] = useState(null);
 
+    const isStudent = user?.role === 'STUDENT';
+    const displayName = isStudent ? user?.name : 'Rahul Sharma';
+
     const [academicInfo, setAcademicInfo] = useState({
         rollNo: '22CS101',
         batch: '2022-2026',
@@ -46,7 +49,7 @@ const StudentProfile = () => {
     });
 
     const [personalInfo, setPersonalInfo] = useState({
-        email: user?.email || 'rahul.s@college.edu',
+        email: isStudent ? user?.email : 'rahul.s@college.edu',
         phone: '+91 98765 43210',
         address: '123 Academic Street, Knowledge Park, Chennai',
         dob: 'May 15, 2004',
@@ -56,6 +59,7 @@ const StudentProfile = () => {
     const [editForm, setEditForm] = useState({ ...personalInfo });
 
     const handlePhotoClick = () => {
+        if (!isStudent) return;
         fileInputRef.current?.click();
     };
 
@@ -97,20 +101,22 @@ const StudentProfile = () => {
                         {profileImg ? (
                             <img src={profileImg} alt="Profile" className="w-full h-full object-cover" />
                         ) : (
-                            user?.name?.charAt(0).toUpperCase()
+                            displayName?.charAt(0).toUpperCase()
                         )}
                     </div>
-                    <button
-                        onClick={handlePhotoClick}
-                        className="absolute bottom-1 right-1 p-2.5 bg-slate-900 text-white rounded-2xl border-4 border-white shadow-xl hover:scale-105 transition-all"
-                    >
-                        <Camera size={18} />
-                    </button>
+                    {isStudent && (
+                        <button
+                            onClick={handlePhotoClick}
+                            className="absolute bottom-1 right-1 p-2.5 bg-slate-900 text-white rounded-2xl border-4 border-white shadow-xl hover:scale-105 transition-all"
+                        >
+                            <Camera size={18} />
+                        </button>
+                    )}
                 </div>
 
                 <div className="text-center md:text-left relative z-10 flex-1">
                     <div className="flex flex-wrap items-center justify-center md:justify-start gap-3 mb-2">
-                        <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight">{user?.name}</h1>
+                        <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight">{displayName}</h1>
                         <span className="px-3 py-1 bg-primary-50 text-primary-600 rounded-full text-[10px] font-bold uppercase tracking-widest border border-primary-100">
                             {academicInfo.rollNo}
                         </span>
@@ -139,15 +145,17 @@ const StudentProfile = () => {
                             <User size={20} className="text-primary-600" />
                             Personal Information
                         </h2>
-                        <button
-                            onClick={() => {
-                                setEditForm({ ...personalInfo });
-                                setIsEditing(true);
-                            }}
-                            className="text-primary-600 text-[10px] font-bold uppercase tracking-widest hover:underline"
-                        >
-                            Edit Details
-                        </button>
+                        {isStudent && (
+                            <button
+                                onClick={() => {
+                                    setEditForm({ ...personalInfo });
+                                    setIsEditing(true);
+                                }}
+                                className="text-primary-600 text-[10px] font-bold uppercase tracking-widest hover:underline"
+                            >
+                                Edit Details
+                            </button>
+                        )}
                     </div>
                     <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-2">
                         <ProfileField icon={Mail} label="Email Address" value={personalInfo.email} />

@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useToast } from '../context/ToastContext';
 import {
     Users,
     Clock,
@@ -32,6 +33,7 @@ const StatCard = ({ title, value, detail, icon: Icon, colorClass, onClick }) => 
 
 const StaffDashboard = () => {
     const navigate = useNavigate();
+    const { showToast } = useToast();
     const atRiskStudents = [
         { id: 1, name: 'Rahul Sharma', roll: '22CS104', attendance: '68%', internals: '32/100', reason: 'Low Attendance' },
         { id: 2, name: 'Priya Patel', roll: '22CS112', attendance: '72%', internals: '28/100', reason: 'Performance' },
@@ -94,7 +96,12 @@ const StaffDashboard = () => {
                             <Users size={20} className="text-red-500" />
                             At-Risk Students (Class 2-B)
                         </h2>
-                        <button className="text-primary-600 text-xs font-bold hover:underline">View All</button>
+                        <button
+                            onClick={() => navigate('/staff/attendance')}
+                            className="text-primary-600 text-xs font-bold hover:underline"
+                        >
+                            View All
+                        </button>
                     </div>
                     <div className="overflow-x-auto">
                         <table className="w-full text-left">
@@ -124,7 +131,11 @@ const StaffDashboard = () => {
                                             <span className="text-sm font-medium text-slate-600">{student.internals}</span>
                                         </td>
                                         <td className="px-6 py-4">
-                                            <button className="p-2 text-primary-600 hover:bg-primary-50 rounded-lg transition-all" title="View Profile">
+                                            <button
+                                                onClick={() => showToast(`Opening performance record for ${student.name}...`, 'info')}
+                                                className="p-2 text-primary-600 hover:bg-primary-50 rounded-lg transition-all"
+                                                title="View Profile"
+                                            >
                                                 <ChevronRight size={18} />
                                             </button>
                                         </td>

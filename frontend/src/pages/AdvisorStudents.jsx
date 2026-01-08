@@ -46,7 +46,10 @@ const AdvisorStudents = () => {
                             className="pl-11 pr-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-primary-500 outline-none transition-all w-64 shadow-sm"
                         />
                     </div>
-                    <button className="p-2.5 bg-white border border-slate-200 text-slate-600 rounded-xl hover:bg-slate-50 transition-all shadow-sm">
+                    <button
+                        onClick={() => showToast('Filter options are being configured for your department.', 'info')}
+                        className="p-2.5 bg-white border border-slate-200 text-slate-600 rounded-xl hover:bg-slate-50 transition-all shadow-sm"
+                    >
                         <Filter size={18} />
                     </button>
                 </div>

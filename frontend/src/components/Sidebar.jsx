@@ -10,6 +10,7 @@ import {
     GraduationCap,
     ChevronRight,
     User,
+    BarChart3,
     X
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -22,7 +23,6 @@ const Sidebar = ({ role, isOpen, onClose }) => {
     const menuItems = {
         STUDENT: [
             { name: 'Dashboard', path: '/student/dashboard', icon: LayoutDashboard },
-            { name: 'My Profile', path: '/student/profile', icon: User },
             { name: 'Attendance & OD', path: '/student/attendance', icon: UserCheck },
             { name: 'Marks', path: '/student/marks', icon: FileText },
             { name: 'Complaints', path: '/student/complaints', icon: AlertCircle },
@@ -36,7 +36,8 @@ const Sidebar = ({ role, isOpen, onClose }) => {
         ADVISOR: [
             { name: 'Dashboard', path: '/advisor/dashboard', icon: LayoutDashboard },
             { name: 'Student Profiles', path: '/advisor/students', icon: User },
-            { name: 'Class Analytics', path: '/advisor/analytics', icon: FileText },
+            { name: 'Subject Allocation', path: '/advisor/allocation', icon: FileText },
+            { name: 'Class Analytics', path: '/advisor/analytics', icon: BarChart3 },
         ],
         HOD: [
             { name: 'Dashboard', path: '/hod/dashboard', icon: LayoutDashboard },
@@ -105,16 +106,20 @@ const Sidebar = ({ role, isOpen, onClose }) => {
                 </nav>
 
                 <div className="p-6 border-t border-slate-100">
-                    <div className="bg-slate-50 rounded-2xl p-4 mb-4 border border-slate-200/50">
+                    <div
+                        onClick={() => navigate(`/${role.toLowerCase()}/profile`)}
+                        className="bg-slate-50 rounded-2xl p-4 mb-4 border border-slate-200/50 flex items-center justify-between group/user transition-all cursor-pointer hover:bg-white hover:shadow-lg hover:shadow-slate-200/50 hover:border-primary-100 active:scale-[0.98]"
+                    >
                         <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 rounded-xl bg-white border border-slate-200 flex items-center justify-center text-primary-600 shadow-sm font-bold uppercase">
+                            <div className="w-10 h-10 rounded-xl bg-white border border-slate-200 flex items-center justify-center text-primary-600 shadow-sm font-bold uppercase group-hover/user:border-primary-200 transition-colors">
                                 {user?.name?.charAt(0)}
                             </div>
-                            <div className="overflow-hidden">
-                                <p className="text-sm font-bold text-slate-900 truncate uppercase">{user?.name}</p>
+                            <div className="overflow-hidden text-left">
+                                <p className="text-sm font-bold text-slate-900 truncate uppercase group-hover/user:text-primary-600 transition-colors">{user?.name}</p>
                                 <p className="text-[10px] text-slate-500 uppercase tracking-widest font-bold opacity-70">{role.replace('_', ' ')}</p>
                             </div>
                         </div>
+                        <ChevronRight size={14} className="text-slate-300 group-hover/user:text-primary-400 group-hover/user:translate-x-1 transition-all" />
                     </div>
                     <button
                         onClick={() => {

@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useToast } from '../context/ToastContext';
 import {
     Users,
     BookOpen,
@@ -12,6 +13,9 @@ import {
 
 const AdvisorDashboard = () => {
     const navigate = useNavigate();
+    const { showToast } = useToast();
+    const [lookup, setLookup] = useState('');
+
     const classDetails = {
         batch: '2022-2026',
         department: 'Computer Science',
@@ -42,7 +46,10 @@ const AdvisorDashboard = () => {
 
             {/* Class Overview Cards */}
             <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-                <div className="bg-slate-900 text-white p-6 rounded-3xl col-span-1 md:col-span-2 relative overflow-hidden group">
+                <div
+                    onClick={() => navigate('/advisor/students')}
+                    className="bg-slate-900 text-white p-6 rounded-3xl col-span-1 md:col-span-2 relative overflow-hidden group cursor-pointer hover:shadow-xl hover:shadow-slate-300 transition-all active:scale-[0.98]"
+                >
                     <div className="absolute right-0 bottom-0 opacity-10 translate-x-1/4 translate-y-1/4 group-hover:scale-110 transition-transform duration-500">
                         <Users size={180} />
                     </div>
@@ -62,7 +69,10 @@ const AdvisorDashboard = () => {
                     </div>
                 </div>
 
-                <div className="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm flex flex-col justify-between">
+                <div
+                    onClick={() => navigate('/advisor/allocation')}
+                    className="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm flex flex-col justify-between cursor-pointer hover:shadow-md transition-all active:scale-95"
+                >
                     <div className="flex justify-between items-start">
                         <div className="p-3 bg-blue-50 text-blue-600 rounded-xl">
                             <BookOpen size={24} />
@@ -75,7 +85,10 @@ const AdvisorDashboard = () => {
                     </div>
                 </div>
 
-                <div className="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm flex flex-col justify-between">
+                <div
+                    onClick={() => navigate('/advisor/analytics')}
+                    className="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm flex flex-col justify-between cursor-pointer hover:shadow-md transition-all active:scale-95"
+                >
                     <div className="flex justify-between items-start">
                         <div className="p-3 bg-purple-50 text-purple-600 rounded-xl">
                             <BarChart3 size={24} />
@@ -97,7 +110,12 @@ const AdvisorDashboard = () => {
                             <AlertTriangle size={20} className="text-amber-500" />
                             Academic Warnings
                         </h2>
-                        <button className="text-primary-600 font-bold text-xs hover:underline">Manage All</button>
+                        <button
+                            onClick={() => navigate('/advisor/students')}
+                            className="text-primary-600 font-bold text-xs hover:underline"
+                        >
+                            Manage All
+                        </button>
                     </div>
                     <div className="overflow-x-auto">
                         <table className="w-full text-left">
@@ -122,7 +140,10 @@ const AdvisorDashboard = () => {
                                         <td className="px-6 py-4">
                                             <div className="flex items-center justify-between">
                                                 <span className="text-xs font-bold text-slate-500 italic">{issue.status}</span>
-                                                <button className="p-2 text-slate-400 hover:text-primary-600">
+                                                <button
+                                                    onClick={() => showToast(`Sending urgent notice to ${issue.student}...`, 'success')}
+                                                    className="p-2 text-slate-400 hover:text-primary-600"
+                                                >
                                                     <ChevronRight size={18} />
                                                 </button>
                                             </div>
@@ -143,19 +164,22 @@ const AdvisorDashboard = () => {
                         <input
                             type="text"
                             placeholder="Search student or roll no."
+                            value={lookup}
+                            onChange={(e) => setLookup(e.target.value)}
+                            onKeyDown={(e) => e.key === 'Enter' && navigate('/advisor/students')}
                             className="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-primary-500 outline-none transition-all"
                         />
                     </div>
                     <div className="space-y-3">
                         <button
-                            onClick={() => navigate('/advisor/analytics')}
-                            className="w-full py-3 bg-slate-50 text-slate-600 font-bold text-xs rounded-xl border border-transparent hover:border-slate-200 transition-all"
+                            onClick={() => showToast('Subject Allocation feature coming soon.', 'info')}
+                            className="w-full py-3 bg-slate-50 text-slate-600 font-bold text-xs rounded-xl border border-transparent hover:border-slate-200 transition-all font-bold"
                         >
                             Subject Allocation Dashboard
                         </button>
                         <button
-                            onClick={() => navigate('/advisor/analytics')}
-                            className="w-full py-3 bg-slate-50 text-slate-600 font-bold text-xs rounded-xl border border-transparent hover:border-slate-200 transition-all"
+                            onClick={() => showToast('Timetable Management feature coming soon.', 'info')}
+                            className="w-full py-3 bg-slate-50 text-slate-600 font-bold text-xs rounded-xl border border-transparent hover:border-slate-200 transition-all font-bold"
                         >
                             Class Timetable Management
                         </button>

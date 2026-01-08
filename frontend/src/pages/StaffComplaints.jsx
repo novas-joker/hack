@@ -82,7 +82,10 @@ const StaffComplaints = () => {
                     <p className="text-slate-500 text-sm mt-1">Review and resolve departmental complaints and suggestions.</p>
                 </div>
                 <div className="flex items-center gap-3">
-                    <button className="flex items-center gap-2 px-5 py-3 bg-white border border-slate-200 text-slate-700 rounded-xl font-bold text-sm hover:bg-slate-50 transition-all">
+                    <button
+                        onClick={() => showToast('Advanced filtering will be available in the next update.', 'info')}
+                        className="flex items-center gap-2 px-5 py-3 bg-white border border-slate-200 text-slate-700 rounded-xl font-bold text-sm hover:bg-slate-50 transition-all"
+                    >
                         <Filter size={18} /> Filters
                     </button>
                 </div>
